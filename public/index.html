@@ -176,7 +176,9 @@
 
     async function fetchResults() {
       try {
-        const res = await fetch(`${API}/results`);
+        const res = await fetch(`${API}/results`, {
+          headers: { 'ngrok-skip-browser-warning': 'true' },
+        });
         const data = await res.json();
         updateUI(data.votes);
       } catch (e) {
@@ -188,7 +190,7 @@
       try {
         const res = await fetch(`${API}/vote`, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
+          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
           body: JSON.stringify({ topic }),
         });
         const data = await res.json();
