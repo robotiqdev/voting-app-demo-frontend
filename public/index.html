@@ -164,7 +164,6 @@
 
   <script>
     let API = '';
-    const STORAGE_KEY = 'zagreb_voted';
 
     const topics = [
       "Multi-Agent Systems",
@@ -172,7 +171,6 @@
       "Building MCP Servers"
     ];
 
-    // Map topic name → DOM elements
     const optionEls = {
       "Multi-Agent Systems": document.querySelector('#opt-multi-agent'),
       "Claude in Production": document.querySelector('#opt-claude-prod'),
@@ -181,35 +179,29 @@
 
     function updateUI(votes) {
       const total = Object.values(votes).reduce((a, b) => a + b, 0);
-      const maxVotes = Math.max(...Object.values(votes));
+      const maxVotes = total > 0 ? Math.max(...Object.values(votes)) : -1;
 
       topics.forEach(topic => {
-        const el = optionEls[topic];
+        const col = optionEls[topic];
         const count = votes[topic] ?? 0;
-        const countEl = el.querySelector('.vote-count');
-        const btn = el.querySelector('.vote-btn');
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
 
-        const newText = count === 1 ? '1 vote' : `${count} votes`;
-        if (countEl.textContent !== newText) {
-          countEl.textContent = newText;
-          countEl.classList.add('updated');
-          setTimeout(() => countEl.classList.remove('updated'), 600);
-        }
+        col.querySelector('.pct').textContent = `${pct}%`;
+        col.querySelector('.bar-fill').style.width = `${pct}%`;
+        col.querySelector('.votes-label').textContent =
+          count === 1 ? '1 vote' : `${count} votes`;
 
-        // Highlight winner (only when votes exist)
         if (total > 0 && count === maxVotes) {
-          btn.style.background = '#d97706';
-          el.style.outline = '2px solid #d97706';
-          el.style.outlineOffset = '4px';
-          el.style.borderRadius = '12px';
+          col.classList.add('winner');
         } else {
-          btn.style.background = '';
-          el.style.outline = '';
+          col.classList.remove('winner');
         }
       });
 
-      document.getElementById('total-votes').textContent =
-        total === 1 ? '1 total vote' : `${total} total votes`;
+      const totalEl = document.getElementById('total-votes');
+      totalEl.textContent = total === 1
+        ? '1 total vote · updating live'
+        : `${total} total votes · updating live`;
     }
 
     async function fetchResults() {
@@ -224,28 +216,6 @@
       }
     }
 
-    async function castVote(topic) {
-      try {
-        const res = await fetch(`${API}/vote`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
-          body: JSON.stringify({ topic }),
-        });
-        const data = await res.json();
-        updateUI(data);
-      } catch (e) {
-        console.warn('Vote failed:', e.message);
-      }
-    }
-
-    function disableAllButtons() {
-      document.querySelectorAll('.vote-btn').forEach(btn => {
-        btn.disabled = true;
-      });
-      document.getElementById('thanks-msg').style.display = 'block';
-    }
-
-    // On load: fetch config, then restore state and start polling
     (async () => {
       try {
         const cfg = await fetch('/config.json');
@@ -255,38 +225,19 @@
         API = '';
       }
 
-      // Generate QR codes for each voting option
       const BASE_URL = API.replace(/\/api$/, '');
       topics.forEach(topic => {
-        const el = optionEls[topic];
-        const qrDiv = document.createElement('div');
-        qrDiv.className = 'qr-code';
-        el.appendChild(qrDiv);
+        const col = optionEls[topic];
+        const qrDiv = col.querySelector('.qr-code');
         new QRCode(qrDiv, {
           text: BASE_URL + '/vote?topic=' + encodeURIComponent(topic),
-          width: 128,
-          height: 128
+          width: 200,
+          height: 200
         });
       });
-
-      if (localStorage.getItem(STORAGE_KEY)) {
-        disableAllButtons();
-      }
 
       fetchResults();
-
-      // Poll every 3 seconds for live updates
       setInterval(fetchResults, 3000);
-
-      // Wire up vote buttons
-      document.querySelectorAll('.vote-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const topic = btn.dataset.topic;
-          localStorage.setItem(STORAGE_KEY, topic);
-          disableAllButtons();
-          await castVote(topic);
-        });
-      });
     })();
   </script>
 </body>
