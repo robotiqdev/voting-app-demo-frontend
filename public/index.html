@@ -131,27 +131,36 @@
 </head>
 <body>
   <header>
-    <h1>Claude &amp; Code Meetup #2 — Zagreb</h1>
-    <p class="subtitle">What should we cover next meetup?</p>
+    <div class="eyebrow">Claude &amp; Code Meetup #2 · Zagreb</div>
+    <h1>What should we cover next?</h1>
+    <p class="scan-hint">Scan the QR code for your topic to vote</p>
   </header>
 
-  <div class="options">
-    <div class="option" id="opt-multi-agent">
-      <button class="vote-btn" data-topic="Multi-Agent Systems">Multi-Agent Systems</button>
-      <div class="vote-count">0 votes</div>
+  <div class="columns">
+    <div class="col" id="opt-multi-agent">
+      <div class="topic">Multi-Agent Systems</div>
+      <div class="qr-code"></div>
+      <div class="pct">0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+      <div class="votes-label">0 votes</div>
     </div>
-    <div class="option" id="opt-claude-prod">
-      <button class="vote-btn" data-topic="Claude in Production">Claude in Production</button>
-      <div class="vote-count">0 votes</div>
+    <div class="col" id="opt-claude-prod">
+      <div class="topic">Claude in Production</div>
+      <div class="qr-code"></div>
+      <div class="pct">0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+      <div class="votes-label">0 votes</div>
     </div>
-    <div class="option" id="opt-mcp">
-      <button class="vote-btn" data-topic="Building MCP Servers">Building MCP Servers</button>
-      <div class="vote-count">0 votes</div>
+    <div class="col" id="opt-mcp">
+      <div class="topic">Building MCP Servers</div>
+      <div class="qr-code"></div>
+      <div class="pct">0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+      <div class="votes-label">0 votes</div>
     </div>
   </div>
 
-  <p class="thanks" id="thanks-msg">Thanks for voting!</p>
-  <p class="total" id="total-votes">0 total votes</p>
+  <footer id="total-votes">0 total votes · updating live</footer>
 
   <script>
     let API = '';
