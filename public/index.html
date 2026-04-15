@@ -4,6 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Claude &amp; Code Meetup #2 — Zagreb</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -93,6 +94,10 @@
       font-size: clamp(0.9rem, 2vw, 1.1rem);
       color: #666;
       text-align: center;
+    }
+
+    .qr-code {
+      margin-top: 0.75rem;
     }
 
     @media (max-width: 480px) {
@@ -216,6 +221,20 @@
       } catch (e) {
         API = '';
       }
+
+      // Generate QR codes for each voting option
+      const BASE_URL = API.replace(/\/api$/, '');
+      topics.forEach(topic => {
+        const el = optionEls[topic];
+        const qrDiv = document.createElement('div');
+        qrDiv.className = 'qr-code';
+        el.appendChild(qrDiv);
+        new QRCode(qrDiv, {
+          text: BASE_URL + '/vote?topic=' + encodeURIComponent(topic),
+          width: 128,
+          height: 128
+        });
+      });
 
       if (localStorage.getItem(STORAGE_KEY)) {
         disableAllButtons();
