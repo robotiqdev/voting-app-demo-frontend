@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude &amp; Code Meetup #2 — Zagreb</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: #0f0f0f;
+      color: #ffffff;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 3rem;
+    }
+
+    header h1 {
+      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-weight: 700;
+      letter-spacing: -0.5px;
+    }
+
+    header p.subtitle {
+      margin-top: 0.75rem;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: #aaaaaa;
+    }
+
+    .options {
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      width: 100%;
+      max-width: 640px;
+    }
+
+    .option {
+      display: flex;
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .vote-btn {
+      background: #d97706;
+      color: #ffffff;
+      border: none;
+      border-radius: 12px;
+      padding: 1.4rem 2rem;
+      font-size: clamp(1.1rem, 3vw, 1.5rem);
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      width: 100%;
+      text-align: left;
+    }
+
+    .vote-btn:hover { background: #b45309; }
+    .vote-btn:active { transform: scale(0.98); }
+    .vote-btn:disabled { background: #555; cursor: not-allowed; }
+
+    .vote-count {
+      margin-top: 0.5rem;
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: #aaaaaa;
+      padding-left: 0.25rem;
+      transition: color 0.3s;
+    }
+
+    .thanks {
+      margin-top: 2rem;
+      font-size: 1.3rem;
+      color: #d97706;
+      text-align: center;
+      display: none;
+    }
+
+    .total {
+      margin-top: 3rem;
+      font-size: clamp(0.9rem, 2vw, 1.1rem);
+      color: #666;
+      text-align: center;
+    }
+
+    @media (max-width: 480px) {
+      .vote-btn { padding: 1.1rem 1.2rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Claude &amp; Code Meetup #2 — Zagreb</h1>
+    <p class="subtitle">What should we cover next meetup?</p>
+  </header>
+
+  <div class="options">
+    <div class="option" id="opt-multi-agent">
+      <button class="vote-btn" data-topic="Multi-Agent Systems">Multi-Agent Systems</button>
+      <div class="vote-count">0 votes</div>
+    </div>
+    <div class="option" id="opt-claude-prod">
+      <button class="vote-btn" data-topic="Claude in Production">Claude in Production</button>
+      <div class="vote-count">0 votes</div>
+    </div>
+    <div class="option" id="opt-mcp">
+      <button class="vote-btn" data-topic="Building MCP Servers">Building MCP Servers</button>
+      <div class="vote-count">0 votes</div>
+    </div>
+  </div>
+
+  <p class="thanks" id="thanks-msg">Thanks for voting!</p>
+  <p class="total" id="total-votes">0 total votes</p>
+
+</body>
+</html>
