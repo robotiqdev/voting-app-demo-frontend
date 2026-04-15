@@ -120,5 +120,101 @@
   <p class="thanks" id="thanks-msg">Thanks for voting!</p>
   <p class="total" id="total-votes">0 total votes</p>
 
+  <script>
+    const API = 'http://localhost:3001/api';
+    const STORAGE_KEY = 'zagreb_voted';
+
+    const topics = [
+      "Multi-Agent Systems",
+      "Claude in Production",
+      "Building MCP Servers"
+    ];
+
+    // Map topic name → DOM elements
+    const optionEls = {
+      "Multi-Agent Systems": document.querySelector('#opt-multi-agent'),
+      "Claude in Production": document.querySelector('#opt-claude-prod'),
+      "Building MCP Servers": document.querySelector('#opt-mcp'),
+    };
+
+    function updateUI(votes) {
+      const total = Object.values(votes).reduce((a, b) => a + b, 0);
+      const maxVotes = Math.max(...Object.values(votes));
+
+      topics.forEach(topic => {
+        const el = optionEls[topic];
+        const count = votes[topic] ?? 0;
+        const countEl = el.querySelector('.vote-count');
+        const btn = el.querySelector('.vote-btn');
+
+        countEl.textContent = count === 1 ? '1 vote' : `${count} votes`;
+
+        // Highlight winner (only when votes exist)
+        if (total > 0 && count === maxVotes) {
+          btn.style.background = '#d97706';
+          el.style.outline = '2px solid #d97706';
+          el.style.outlineOffset = '4px';
+          el.style.borderRadius = '12px';
+        } else {
+          btn.style.background = '';
+          el.style.outline = '';
+        }
+      });
+
+      document.getElementById('total-votes').textContent =
+        total === 1 ? '1 total vote' : `${total} total votes`;
+    }
+
+    async function fetchResults() {
+      try {
+        const res = await fetch(`${API}/results`);
+        const data = await res.json();
+        updateUI(data.votes);
+      } catch (e) {
+        console.warn('Could not fetch results:', e.message);
+      }
+    }
+
+    async function castVote(topic) {
+      try {
+        const res = await fetch(`${API}/vote`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ topic }),
+        });
+        const data = await res.json();
+        updateUI(data.votes);
+      } catch (e) {
+        console.warn('Vote failed:', e.message);
+      }
+    }
+
+    function disableAllButtons() {
+      document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.disabled = true;
+      });
+      document.getElementById('thanks-msg').style.display = 'block';
+    }
+
+    // On load: restore voted state and fetch current results
+    if (localStorage.getItem(STORAGE_KEY)) {
+      disableAllButtons();
+    }
+
+    fetchResults();
+
+    // Poll every 3 seconds for live updates
+    setInterval(fetchResults, 3000);
+
+    // Wire up vote buttons
+    document.querySelectorAll('.vote-btn').forEach(btn => {
+      btn.addEventListener('click', async () => {
+        const topic = btn.dataset.topic;
+        localStorage.setItem(STORAGE_KEY, topic);
+        disableAllButtons();
+        await castVote(topic);
+      });
+    });
+  </script>
 </body>
 </html>
