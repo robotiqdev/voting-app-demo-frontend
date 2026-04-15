@@ -125,7 +125,7 @@
   <p class="total" id="total-votes">0 total votes</p>
 
   <script>
-    const API = '';
+    let API = '';
     const STORAGE_KEY = 'zagreb_voted';
 
     const topics = [
@@ -205,25 +205,35 @@
       document.getElementById('thanks-msg').style.display = 'block';
     }
 
-    // On load: restore voted state and fetch current results
-    if (localStorage.getItem(STORAGE_KEY)) {
-      disableAllButtons();
-    }
+    // On load: fetch config, then restore state and start polling
+    (async () => {
+      try {
+        const cfg = await fetch('/config.json');
+        const data = await cfg.json();
+        API = data.api || '';
+      } catch (e) {
+        API = '';
+      }
 
-    fetchResults();
-
-    // Poll every 3 seconds for live updates
-    setInterval(fetchResults, 3000);
-
-    // Wire up vote buttons
-    document.querySelectorAll('.vote-btn').forEach(btn => {
-      btn.addEventListener('click', async () => {
-        const topic = btn.dataset.topic;
-        localStorage.setItem(STORAGE_KEY, topic);
+      if (localStorage.getItem(STORAGE_KEY)) {
         disableAllButtons();
-        await castVote(topic);
+      }
+
+      fetchResults();
+
+      // Poll every 3 seconds for live updates
+      setInterval(fetchResults, 3000);
+
+      // Wire up vote buttons
+      document.querySelectorAll('.vote-btn').forEach(btn => {
+        btn.addEventListener('click', async () => {
+          const topic = btn.dataset.topic;
+          localStorage.setItem(STORAGE_KEY, topic);
+          disableAllButtons();
+          await castVote(topic);
+        });
       });
-    });
+    })();
   </script>
 </body>
 </html>
