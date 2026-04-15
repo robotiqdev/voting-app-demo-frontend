@@ -140,22 +140,22 @@
   </header>
 
   <div class="columns">
-    <div class="col" id="opt-multi-agent">
-      <div class="topic">Multi-Agent Systems</div>
+    <div class="col" id="opt-token-burn">
+      <div class="topic">Token burn</div>
       <div class="qr-code"></div>
       <div class="pct">0%</div>
       <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
       <div class="votes-label">0 votes</div>
     </div>
-    <div class="col" id="opt-claude-prod">
-      <div class="topic">Claude in Production</div>
+    <div class="col" id="opt-local-llms">
+      <div class="topic">Local LLMs</div>
       <div class="qr-code"></div>
       <div class="pct">0%</div>
       <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
       <div class="votes-label">0 votes</div>
     </div>
-    <div class="col" id="opt-mcp">
-      <div class="topic">Building MCP Servers</div>
+    <div class="col" id="opt-agent-orch">
+      <div class="topic">Agent orchestration</div>
       <div class="qr-code"></div>
       <div class="pct">0%</div>
       <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
@@ -169,15 +169,15 @@
     let API = '';
 
     const topics = [
-      "Multi-Agent Systems",
-      "Claude in Production",
-      "Building MCP Servers"
+      "Token burn",
+      "Local LLMs",
+      "Agent orchestration"
     ];
 
     const optionEls = {
-      "Multi-Agent Systems": document.querySelector('#opt-multi-agent'),
-      "Claude in Production": document.querySelector('#opt-claude-prod'),
-      "Building MCP Servers": document.querySelector('#opt-mcp'),
+      "Token burn": document.querySelector('#opt-token-burn'),
+      "Local LLMs": document.querySelector('#opt-local-llms'),
+      "Agent orchestration": document.querySelector('#opt-agent-orch'),
     };
 
     function updateUI(votes) {
