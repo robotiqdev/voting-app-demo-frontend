@@ -76,6 +76,10 @@
       transition: color 0.3s;
     }
 
+    .vote-count.updated {
+      color: #ffffff;
+    }
+
     .thanks {
       margin-top: 2rem;
       font-size: 1.3rem;
@@ -147,7 +151,12 @@
         const countEl = el.querySelector('.vote-count');
         const btn = el.querySelector('.vote-btn');
 
-        countEl.textContent = count === 1 ? '1 vote' : `${count} votes`;
+        const newText = count === 1 ? '1 vote' : `${count} votes`;
+        if (countEl.textContent !== newText) {
+          countEl.textContent = newText;
+          countEl.classList.add('updated');
+          setTimeout(() => countEl.classList.remove('updated'), 600);
+        }
 
         // Highlight winner (only when votes exist)
         if (total > 0 && count === maxVotes) {
