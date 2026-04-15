@@ -13,95 +13,119 @@
       color: #ffffff;
       font-family: 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 2.5rem 3rem;
+      gap: 2rem;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
+    header { text-align: center; }
+
+    .eyebrow {
+      font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #d97706;
+      margin-bottom: 0.6rem;
     }
 
     header h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
       font-weight: 700;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.03em;
     }
 
-    header p.subtitle {
-      margin-top: 0.75rem;
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      color: #aaaaaa;
+    .scan-hint {
+      margin-top: 0.6rem;
+      font-size: clamp(0.75rem, 1.4vw, 1rem);
+      color: #555;
     }
 
-    .options {
-      display: flex;
-      flex-direction: column;
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
-      width: 100%;
-      max-width: 640px;
     }
 
-    .option {
+    .col {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
+      gap: 1.25rem;
+      transition: border-color 0.4s, box-shadow 0.4s;
     }
 
-    .vote-btn {
-      background: #d97706;
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 1.4rem 2rem;
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      width: 100%;
-      text-align: left;
+    .col.winner {
+      border-color: #d97706;
+      box-shadow: 0 0 32px rgba(217,119,6,0.15), inset 0 0 60px rgba(217,119,6,0.04);
     }
 
-    .vote-btn:hover { background: #b45309; }
-    .vote-btn:active { transform: scale(0.98); }
-    .vote-btn:disabled { background: #555; cursor: not-allowed; }
-
-    .vote-count {
-      margin-top: 0.5rem;
-      font-size: clamp(1rem, 2vw, 1.2rem);
-      color: #aaaaaa;
-      padding-left: 0.25rem;
-      transition: color 0.3s;
-    }
-
-    .vote-count.updated {
-      color: #ffffff;
-    }
-
-    .thanks {
-      margin-top: 2rem;
-      font-size: 1.3rem;
-      color: #d97706;
+    .topic {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 700;
       text-align: center;
-      display: none;
+      color: #888;
+      line-height: 1.2;
     }
 
-    .total {
-      margin-top: 3rem;
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
-      color: #666;
-      text-align: center;
-    }
+    .col.winner .topic { color: #d97706; }
 
     .qr-code {
-      margin-top: 0.75rem;
+      width: clamp(120px, 18vw, 220px);
+      height: clamp(120px, 18vw, 220px);
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    @media (max-width: 480px) {
-      .vote-btn { padding: 1.1rem 1.2rem; }
+    .col:not(.winner) .qr-code { opacity: 0.5; }
+
+    .pct {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #333;
+      line-height: 1;
+    }
+
+    .col.winner .pct { color: #d97706; }
+
+    .bar-track {
+      width: 100%;
+      height: 8px;
+      background: #1e1e1e;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 8px;
+      border-radius: 4px;
+      background: #2a2a2a;
+      transition: width 0.6s ease;
+    }
+
+    .col.winner .bar-fill { background: #d97706; }
+
+    .votes-label {
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      color: #444;
+    }
+
+    .col.winner .votes-label { color: #7a4a10; }
+
+    footer {
+      text-align: center;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      color: #333;
+      letter-spacing: 0.05em;
     }
   </style>
 </head>
