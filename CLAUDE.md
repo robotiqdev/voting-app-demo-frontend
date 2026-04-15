@@ -37,6 +37,13 @@ A live voting page projected on screen at a Zagreb Claude Code meetup.
 - One vote per session — use `localStorage` to disable buttons after voting
 - Animate vote count on change (CSS transition)
 
+## Workflow — Superpowers Skills
+Before writing any code, use these skills in order:
+1. `using-git-worktrees` — you are already in a git worktree, follow its conventions
+2. `writing-plans` — create a plan with 2-5 minute tasks before implementing
+3. `test-driven-development` — write tests first where applicable, then implement
+4. `executing-plans` — work through your plan task by task, verify each step
+
 ## Rules
 - Everything in one file: `public/index.html`
 - No external CDN dependencies
