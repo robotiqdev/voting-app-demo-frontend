@@ -13,125 +13,157 @@
       color: #ffffff;
       font-family: 'Segoe UI', system-ui, sans-serif;
       min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      padding: 2.5rem 3rem;
+      gap: 2rem;
     }
 
-    header {
-      text-align: center;
-      margin-bottom: 3rem;
+    header { text-align: center; }
+
+    .eyebrow {
+      font-size: clamp(0.65rem, 1.2vw, 0.85rem);
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: #d97706;
+      margin-bottom: 0.6rem;
     }
 
     header h1 {
-      font-size: clamp(1.8rem, 5vw, 3rem);
+      font-size: clamp(1.6rem, 3.5vw, 2.6rem);
       font-weight: 700;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.03em;
     }
 
-    header p.subtitle {
-      margin-top: 0.75rem;
-      font-size: clamp(1rem, 2.5vw, 1.4rem);
-      color: #aaaaaa;
+    .scan-hint {
+      margin-top: 0.6rem;
+      font-size: clamp(0.75rem, 1.4vw, 1rem);
+      color: #555;
     }
 
-    .options {
-      display: flex;
-      flex-direction: column;
+    .columns {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.5rem;
-      width: 100%;
-      max-width: 640px;
     }
 
-    .option {
+    .col {
+      background: #111;
+      border: 1px solid #222;
+      border-radius: 16px;
+      padding: 2rem 1.75rem;
       display: flex;
       flex-direction: column;
-      align-items: stretch;
+      align-items: center;
+      gap: 1.25rem;
+      transition: border-color 0.4s, box-shadow 0.4s;
     }
 
-    .vote-btn {
-      background: #d97706;
-      color: #ffffff;
-      border: none;
-      border-radius: 12px;
-      padding: 1.4rem 2rem;
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
-      font-weight: 600;
-      cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-      width: 100%;
-      text-align: left;
+    .col.winner {
+      border-color: #d97706;
+      box-shadow: 0 0 32px rgba(217,119,6,0.15), inset 0 0 60px rgba(217,119,6,0.04);
     }
 
-    .vote-btn:hover { background: #b45309; }
-    .vote-btn:active { transform: scale(0.98); }
-    .vote-btn:disabled { background: #555; cursor: not-allowed; }
-
-    .vote-count {
-      margin-top: 0.5rem;
-      font-size: clamp(1rem, 2vw, 1.2rem);
-      color: #aaaaaa;
-      padding-left: 0.25rem;
-      transition: color 0.3s;
-    }
-
-    .vote-count.updated {
-      color: #ffffff;
-    }
-
-    .thanks {
-      margin-top: 2rem;
-      font-size: 1.3rem;
-      color: #d97706;
+    .topic {
+      font-size: clamp(1rem, 2vw, 1.5rem);
+      font-weight: 700;
       text-align: center;
-      display: none;
+      color: #888;
+      line-height: 1.2;
     }
 
-    .total {
-      margin-top: 3rem;
-      font-size: clamp(0.9rem, 2vw, 1.1rem);
-      color: #666;
-      text-align: center;
-    }
+    .col.winner .topic { color: #d97706; }
 
     .qr-code {
-      margin-top: 0.75rem;
+      width: clamp(120px, 18vw, 220px);
+      height: clamp(120px, 18vw, 220px);
+      background: #fff;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
     }
 
-    @media (max-width: 480px) {
-      .vote-btn { padding: 1.1rem 1.2rem; }
+    .col:not(.winner) .qr-code { opacity: 0.5; }
+
+    .pct {
+      font-size: clamp(2.5rem, 6vw, 5rem);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      color: #333;
+      line-height: 1;
+    }
+
+    .col.winner .pct { color: #d97706; }
+
+    .bar-track {
+      width: 100%;
+      height: 8px;
+      background: #1e1e1e;
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 8px;
+      border-radius: 4px;
+      background: #2a2a2a;
+      transition: width 0.6s ease;
+    }
+
+    .col.winner .bar-fill { background: #d97706; }
+
+    .votes-label {
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      color: #444;
+    }
+
+    .col.winner .votes-label { color: #7a4a10; }
+
+    footer {
+      text-align: center;
+      font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+      color: #333;
+      letter-spacing: 0.05em;
     }
   </style>
 </head>
 <body>
   <header>
-    <h1>Claude &amp; Code Meetup #2 — Zagreb</h1>
-    <p class="subtitle">What should we cover next meetup?</p>
+    <div class="eyebrow">Claude &amp; Code Meetup #2 · Zagreb</div>
+    <h1>What should we cover next?</h1>
+    <p class="scan-hint">Scan the QR code for your topic to vote</p>
   </header>
 
-  <div class="options">
-    <div class="option" id="opt-multi-agent">
-      <button class="vote-btn" data-topic="Multi-Agent Systems">Multi-Agent Systems</button>
-      <div class="vote-count">0 votes</div>
+  <div class="columns">
+    <div class="col" id="opt-multi-agent">
+      <div class="topic">Multi-Agent Systems</div>
+      <div class="qr-code"></div>
+      <div class="pct">0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+      <div class="votes-label">0 votes</div>
     </div>
-    <div class="option" id="opt-claude-prod">
-      <button class="vote-btn" data-topic="Claude in Production">Claude in Production</button>
-      <div class="vote-count">0 votes</div>
+    <div class="col" id="opt-claude-prod">
+      <div class="topic">Claude in Production</div>
+      <div class="qr-code"></div>
+      <div class="pct">0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+      <div class="votes-label">0 votes</div>
     </div>
-    <div class="option" id="opt-mcp">
-      <button class="vote-btn" data-topic="Building MCP Servers">Building MCP Servers</button>
-      <div class="vote-count">0 votes</div>
+    <div class="col" id="opt-mcp">
+      <div class="topic">Building MCP Servers</div>
+      <div class="qr-code"></div>
+      <div class="pct">0%</div>
+      <div class="bar-track"><div class="bar-fill" style="width:0%"></div></div>
+      <div class="votes-label">0 votes</div>
     </div>
   </div>
 
-  <p class="thanks" id="thanks-msg">Thanks for voting!</p>
-  <p class="total" id="total-votes">0 total votes</p>
+  <footer id="total-votes">0 total votes · updating live</footer>
 
   <script>
     let API = '';
-    const STORAGE_KEY = 'zagreb_voted';
 
     const topics = [
       "Multi-Agent Systems",
@@ -139,7 +171,6 @@
       "Building MCP Servers"
     ];
 
-    // Map topic name → DOM elements
     const optionEls = {
       "Multi-Agent Systems": document.querySelector('#opt-multi-agent'),
       "Claude in Production": document.querySelector('#opt-claude-prod'),
@@ -148,35 +179,29 @@
 
     function updateUI(votes) {
       const total = Object.values(votes).reduce((a, b) => a + b, 0);
-      const maxVotes = Math.max(...Object.values(votes));
+      const maxVotes = total > 0 ? Math.max(...Object.values(votes)) : -1;
 
       topics.forEach(topic => {
-        const el = optionEls[topic];
+        const col = optionEls[topic];
         const count = votes[topic] ?? 0;
-        const countEl = el.querySelector('.vote-count');
-        const btn = el.querySelector('.vote-btn');
+        const pct = total > 0 ? Math.round((count / total) * 100) : 0;
 
-        const newText = count === 1 ? '1 vote' : `${count} votes`;
-        if (countEl.textContent !== newText) {
-          countEl.textContent = newText;
-          countEl.classList.add('updated');
-          setTimeout(() => countEl.classList.remove('updated'), 600);
-        }
+        col.querySelector('.pct').textContent = `${pct}%`;
+        col.querySelector('.bar-fill').style.width = `${pct}%`;
+        col.querySelector('.votes-label').textContent =
+          count === 1 ? '1 vote' : `${count} votes`;
 
-        // Highlight winner (only when votes exist)
         if (total > 0 && count === maxVotes) {
-          btn.style.background = '#d97706';
-          el.style.outline = '2px solid #d97706';
-          el.style.outlineOffset = '4px';
-          el.style.borderRadius = '12px';
+          col.classList.add('winner');
         } else {
-          btn.style.background = '';
-          el.style.outline = '';
+          col.classList.remove('winner');
         }
       });
 
-      document.getElementById('total-votes').textContent =
-        total === 1 ? '1 total vote' : `${total} total votes`;
+      const totalEl = document.getElementById('total-votes');
+      totalEl.textContent = total === 1
+        ? '1 total vote · updating live'
+        : `${total} total votes · updating live`;
     }
 
     async function fetchResults() {
@@ -191,28 +216,6 @@
       }
     }
 
-    async function castVote(topic) {
-      try {
-        const res = await fetch(`${API}/vote`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
-          body: JSON.stringify({ topic }),
-        });
-        const data = await res.json();
-        updateUI(data);
-      } catch (e) {
-        console.warn('Vote failed:', e.message);
-      }
-    }
-
-    function disableAllButtons() {
-      document.querySelectorAll('.vote-btn').forEach(btn => {
-        btn.disabled = true;
-      });
-      document.getElementById('thanks-msg').style.display = 'block';
-    }
-
-    // On load: fetch config, then restore state and start polling
     (async () => {
       try {
         const cfg = await fetch('/config.json');
@@ -222,38 +225,19 @@
         API = '';
       }
 
-      // Generate QR codes for each voting option
       const BASE_URL = API.replace(/\/api$/, '');
       topics.forEach(topic => {
-        const el = optionEls[topic];
-        const qrDiv = document.createElement('div');
-        qrDiv.className = 'qr-code';
-        el.appendChild(qrDiv);
+        const col = optionEls[topic];
+        const qrDiv = col.querySelector('.qr-code');
         new QRCode(qrDiv, {
           text: BASE_URL + '/vote?topic=' + encodeURIComponent(topic),
-          width: 128,
-          height: 128
+          width: 200,
+          height: 200
         });
       });
-
-      if (localStorage.getItem(STORAGE_KEY)) {
-        disableAllButtons();
-      }
 
       fetchResults();
-
-      // Poll every 3 seconds for live updates
       setInterval(fetchResults, 3000);
-
-      // Wire up vote buttons
-      document.querySelectorAll('.vote-btn').forEach(btn => {
-        btn.addEventListener('click', async () => {
-          const topic = btn.dataset.topic;
-          localStorage.setItem(STORAGE_KEY, topic);
-          disableAllButtons();
-          await castVote(topic);
-        });
-      });
     })();
   </script>
 </body>
